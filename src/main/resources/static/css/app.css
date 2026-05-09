@@ -1,0 +1,43 @@
+      body {
+          background-color: #f5f7fa;
+      }
+
+      .navbar {
+          background: #ffffff;
+      }
+
+      .page-title {
+          font-weight: 700;
+      }
+
+      .section-card {
+          border: none;
+          border-radius: 14px;
+      }
+
+      .table th {
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          color: #6c757d;
+      }
+
+      .table td,
+      .table th {
+          vertical-align: middle;
+      }
+
+      .action-buttons {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+      }
+
+      .action-buttons form {
+          margin: 0;
+      }
+
+      .price-cell,
+      .inventory-cell {
+          white-space: nowrap;
+      }

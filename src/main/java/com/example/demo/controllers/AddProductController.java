@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.domain.Part;
 import com.example.demo.domain.Product;
@@ -51,7 +52,7 @@ public class AddProductController {
 
 	@PostMapping("/showFormAddProduct")
 	public String submitForm(@Valid @ModelAttribute("product") Product product, BindingResult bindingResult,
-			Model theModel) {
+			Model theModel, RedirectAttributes ra) {
 		theModel.addAttribute("product", product);
 
 		if (bindingResult.hasErrors()) {
@@ -119,7 +120,8 @@ public class AddProductController {
 				product.setInv(0);
 			}
 			repo.save(product);
-			return "confirmationaddproduct";
+			ra.addFlashAttribute("msg", "Product saved successfully.");
+			return "redirect:/mainscreen";
 		}
 	}
 
@@ -130,7 +132,7 @@ public class AddProductController {
 		Product theProduct = repo.findById(theId);
 		product1 = theProduct;
 
-		// set the employ as a model attribute to pre-populate the form
+		// set as a model attribute to pre-populate the form
 		theModel.addAttribute("product", theProduct);
 		theModel.addAttribute("assparts", theProduct.getParts());
 		List<Part> availParts = new ArrayList<>();
@@ -144,7 +146,7 @@ public class AddProductController {
 	}
 
 	@GetMapping("/deleteproduct")
-	public String deleteProduct(@RequestParam("productID") int theId, Model theModel) {
+	public String deleteProduct(@RequestParam("productID") int theId, Model theModel, RedirectAttributes ra) {
 		ProductService productService = context.getBean(ProductServiceImpl.class);
 		Product product2 = productService.findById(theId);
 		for (Part part : product2.getParts()) {
@@ -155,7 +157,8 @@ public class AddProductController {
 		productService.save(product2);
 		productService.deleteById(theId);
 
-		return "confirmationdeleteproduct";
+		ra.addFlashAttribute("msg", "Product deleted successfully.");
+		return "redirect:/mainscreen";
 	}
 
 	public AddProductController(PartService partService) {
@@ -164,9 +167,10 @@ public class AddProductController {
 
 	// make the add and remove buttons work
 	@GetMapping("/associatepart")
-	public String associatePart(@Valid @RequestParam("partID") int theID, Model theModel) {
+	public String associatePart(@Valid @RequestParam("partID") int theID, Model theModel, RedirectAttributes ra) {
 		if (product1.getName() == null) {
-			return "saveproductscreen";
+			ra.addFlashAttribute("err", "Please save the product before adding parts.");
+			return "redirect:/showFormAddProduct";
 		} else {
 			product1.getParts().add(partService.findById(theID));
 			partService.findById(theID).getProducts().add(product1);

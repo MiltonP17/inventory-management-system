@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 
 @Controller
@@ -22,16 +24,17 @@ public class AddOutsourcedPartController {
     }
 
     @GetMapping("/showFormAddOutPart")
-    public String showFormAddOutsourcedPart(Model theModel){
-        Part part=new OutsourcedPart();
-        theModel.addAttribute("outsourcedpart",part);
+    public String showFormAddOutsourcedPart(Model theModel) {
+        Part part = new OutsourcedPart();
+        theModel.addAttribute("outsourcedpart", part);
         return "OutsourcedPartForm";
     }
 
     @SuppressWarnings("unused")
-	@PostMapping("/showFormAddOutPart")
-    public String submitForm(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part, BindingResult binding, Model theModel){
-        theModel.addAttribute("outsourcedpart",part);
+    @PostMapping("/showFormAddOutPart")
+    public String submitForm(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part, BindingResult binding,
+            Model theModel, RedirectAttributes ra) {
+        theModel.addAttribute("outsourcedpart", part);
         // ---- 1) Bean Validation errors? Back to form.
         if (binding.hasErrors()) {
             return "OutsourcedPartForm";
@@ -73,9 +76,8 @@ public class AddOutsourcedPartController {
         outsourcedPartService.save(part);
 
         // ---- 4) Success view
-        return "confirmationaddpart";
+        ra.addFlashAttribute("msg", "Outsourced part saved successfully.");
+        return "redirect:/mainscreen";
     }
-
-
 
 }

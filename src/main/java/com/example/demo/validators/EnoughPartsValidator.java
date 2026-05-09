@@ -10,12 +10,12 @@ import org.springframework.context.ApplicationContext;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, Product> {
+public class EnoughPartsValidator implements ConstraintValidator<ValidEnoughParts, Product> {
     @Autowired
     private ApplicationContext context;
     public static  ApplicationContext myContext;
     @Override
-    public void initialize(ValidEnufParts constraintAnnotation) {
+    public void initialize(ValidEnoughParts constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 

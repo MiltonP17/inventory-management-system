@@ -9,28 +9,31 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
-public class AddInhousePartController{
+public class AddInhousePartController {
     @Autowired
     private final InhousePartService inhousePartService;
 
     public AddInhousePartController(InhousePartService inhousePartService) {
         this.inhousePartService = inhousePartService;
     }
+
     @GetMapping("/showFormAddInPart")
-    public String showFormAddInhousePart(Model theModel){
-        InhousePart inhousepart=new InhousePart();
-        theModel.addAttribute("inhousepart",inhousepart);
+    public String showFormAddInhousePart(Model theModel) {
+        InhousePart inhousepart = new InhousePart();
+        theModel.addAttribute("inhousepart", inhousepart);
         return "InhousePartForm";
     }
 
     @SuppressWarnings("unused")
-	@PostMapping("/showFormAddInPart")
-    public String submitForm(@Valid @ModelAttribute("inhousepart") InhousePart part, BindingResult binding, Model model){
-        model.addAttribute("inhousepart",part);
+    @PostMapping("/showFormAddInPart")
+    public String submitForm(@Valid @ModelAttribute("inhousepart") InhousePart part, BindingResult binding, Model model,
+            RedirectAttributes ra) {
+        model.addAttribute("inhousepart", part);
         model.addAttribute("inhousepart", part);
 
         // 1) JSR-303 field validation errors?
@@ -75,7 +78,8 @@ public class AddInhousePartController{
         inhousePartService.save(part);
 
         // 4) Success
-        return "confirmationaddpart";
+        ra.addFlashAttribute("msg", "Inhouse part saved successfully.");
+        return "redirect:/mainscreen";
 
     }
 

@@ -13,13 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
-import com.example.demo.validators.ValidEnufParts;
+import com.example.demo.validators.ValidEnoughParts;
 import com.example.demo.validators.ValidProductPrice;
 
 @Entity
 @Table(name = "Products")
 @ValidProductPrice
-@ValidEnufParts
+@ValidEnoughParts
 public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
